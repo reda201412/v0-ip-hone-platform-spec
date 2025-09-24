@@ -1,0 +1,140 @@
+import Link from "next/link"
+import { ArrowLeft, Shield, Truck, CreditCard } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+export default function iPhone16Page() {
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <div className="border-b border-border/40">
+        <div className="container mx-auto px-4 py-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Retour à l'accueil
+          </Link>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <section className="py-12 lg:py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl lg:text-6xl font-bold text-balance">iPhone 16</h1>
+                <p className="text-xl text-muted-foreground text-balance">Conçu pour Apple Intelligence.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-3xl font-bold text-foreground">899€</span>
+                </div>
+                <p className="text-sm text-muted-foreground">Ou 37,46€/mois pendant 24 mois</p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="flex-1 sm:flex-none">
+                  Acheter maintenant
+                </Button>
+                <Button variant="outline" size="lg" className="flex-1 sm:flex-none bg-transparent">
+                  Ajouter au panier
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Truck className="h-4 w-4" />
+                  Livraison gratuite
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4" />
+                  Garantie 2 ans
+                </div>
+                <div className="flex items-center gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  Paiement sécurisé
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-background to-muted rounded-3xl p-8 flex items-center justify-center">
+                <img
+                  src="/iphone-16-ultramarine-premium-product-shot.jpg"
+                  alt="iPhone 16"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Couleurs disponibles */}
+      <section className="py-12 border-t border-border/40">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8">Couleurs disponibles</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {[
+              { name: "Noir", color: "#1C1C1E" },
+              { name: "Blanc", color: "#F5F5F7" },
+              { name: "Rose", color: "#FF2D92" },
+              { name: "Sarcelle", color: "#5AC8FA" },
+              { name: "Outremer", color: "#007AFF" },
+            ].map((variant) => (
+              <div key={variant.name} className="text-center space-y-3">
+                <div className="aspect-square bg-gradient-to-br from-background to-muted rounded-2xl p-4 flex items-center justify-center">
+                  <div
+                    className="w-16 h-16 rounded-full border-2 border-border"
+                    style={{ backgroundColor: variant.color }}
+                  />
+                </div>
+                <p className="text-sm font-medium">{variant.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Caractéristiques */}
+      <section className="py-12 border-t border-border/40">
+        <div className="container mx-auto px-4">
+          <h2 className="text-2xl font-bold mb-8">Caractéristiques principales</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="space-y-3">
+              <h3 className="font-semibold">Écran</h3>
+              <p className="text-sm text-muted-foreground">Super Retina XDR 6,1" avec Dynamic Island</p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-semibold">Puce</h3>
+              <p className="text-sm text-muted-foreground">
+                Puce A18 avec GPU 5 cœurs optimisée pour Apple Intelligence
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-semibold">Appareil photo</h3>
+              <p className="text-sm text-muted-foreground">Système 48 Mpx avec Ultra grand-angle et Fusion Camera</p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-semibold">Bouton Action</h3>
+              <p className="text-sm text-muted-foreground">
+                Personnalisez votre raccourci favori d'une simple pression
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-semibold">Stockage</h3>
+              <p className="text-sm text-muted-foreground">128 Go, 256 Go ou 512 Go</p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-semibold">Autonomie</h3>
+              <p className="text-sm text-muted-foreground">Jusqu'à 22h de lecture vidéo avec USB-C</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

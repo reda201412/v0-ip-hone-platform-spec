@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function NewArrivalsSection() {
   const newModels = [
@@ -8,25 +9,32 @@ export function NewArrivalsSection() {
       name: "iPhone 17 Pro",
       tagline: "Performance ultime",
       colors: ["Cosmic Orange", "Deep Blue", "Silver"],
-      startingPrice: 1299,
-      image: "/iphone-17-pro-cosmic-orange-premium-product-shot.jpg",
+      startingPrice: 1169,
+      originalPrice: 1499,
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg",
       features: ["A18 Pro", "Titanium", "Triple Caméra Pro"],
+      slug: "iphone-17-pro",
     },
     {
       name: "iPhone Air",
       tagline: "Le plus fin jamais créé",
       colors: ["Blue", "Gold", "White", "Black"],
       startingPrice: 899,
-      image: "/iphone-air-blue-ultra-thin-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-Plus-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Ultra Thin", "A18", "Pro Performance"],
+      slug: "iphone-air",
     },
     {
       name: "iPhone 17",
       tagline: "Plus résistant, plus beau",
       colors: ["Lavender", "Sage", "Mist Blue", "White", "Black"],
       startingPrice: 799,
-      image: "/iphone-17-lavender-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg",
       features: ["A18", "Double Caméra", "Nouveau Design"],
+      slug: "iphone-17",
     },
   ]
 
@@ -61,6 +69,9 @@ export function NewArrivalsSection() {
                     <Sparkles className="h-3 w-3 mr-1" />
                     NEW
                   </Badge>
+                  {model.name === "iPhone 17 Pro" && (
+                    <Badge className="absolute top-4 right-4 bg-red-500 hover:bg-red-600">-22%</Badge>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -110,13 +121,20 @@ export function NewArrivalsSection() {
                 <div className="space-y-4">
                   <div className="text-center">
                     <div className="text-2xl font-bold">À partir de {model.startingPrice}€</div>
-                    <div className="text-sm text-muted-foreground">Neuf et reconditionné</div>
+                    <div className="text-sm text-muted-foreground">Neuf uniquement</div>
+                    {model.originalPrice && (
+                      <div className="text-sm text-muted-foreground line-through">
+                        Prix initial: {model.originalPrice}€
+                      </div>
+                    )}
                   </div>
 
-                  <Button className="w-full" size="lg">
-                    Découvrir {model.name}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  <Link href={`/produits/${model.slug}`}>
+                    <Button className="w-full" size="lg">
+                      Découvrir {model.name}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -124,9 +142,11 @@ export function NewArrivalsSection() {
         </div>
 
         <div className="text-center">
-          <Button variant="outline" size="lg">
-            Voir tous les nouveaux modèles
-          </Button>
+          <Link href="/produits/nouveautes">
+            <Button variant="outline" size="lg">
+              Voir tous les nouveaux modèles
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

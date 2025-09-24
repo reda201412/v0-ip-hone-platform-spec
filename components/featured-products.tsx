@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, Battery, Shield, Sparkles } from "lucide-react"
+import Link from "next/link"
 
 export function FeaturedProducts() {
   const products = [
@@ -12,11 +13,13 @@ export function FeaturedProducts() {
       condition: "Neuf",
       grade: "A+",
       batteryHealth: "100%",
-      price: 1299,
+      price: 1169, // 22% discount from 1499€
       originalPrice: 1499,
-      image: "/iphone-17-pro-cosmic-orange-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Action Button", "Triple Caméra Pro", "Titanium", "A18 Pro"],
       isNew: true,
+      slug: "iphone-17-pro",
     },
     {
       id: 2,
@@ -28,9 +31,11 @@ export function FeaturedProducts() {
       batteryHealth: "100%",
       price: 899,
       originalPrice: 1099,
-      image: "/iphone-air-blue-ultra-thin-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-Plus-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Ultra Thin", "Pro Performance", "Face ID", "A18"],
       isNew: true,
+      slug: "iphone-air",
     },
     {
       id: 3,
@@ -42,35 +47,43 @@ export function FeaturedProducts() {
       batteryHealth: "100%",
       price: 799,
       originalPrice: 999,
-      image: "/iphone-17-lavender-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Double Caméra", "A18", "Face ID", "5G"],
       isNew: true,
+      slug: "iphone-17",
     },
     {
       id: 4,
       name: "iPhone 16",
       storage: "128GB",
       color: "Ultramarine",
-      condition: "Reconditionné",
+      condition: "Neuf",
       grade: "A+",
-      batteryHealth: "98%",
+      batteryHealth: "100%",
       price: 649,
       originalPrice: 899,
-      image: "/iphone-16-ultramarine-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Action Button", "Double Caméra", "A18", "5G"],
+      isNew: true,
+      slug: "iphone-16",
     },
     {
       id: 5,
       name: "iPhone 16e",
       storage: "64GB",
       color: "White",
-      condition: "Reconditionné",
-      grade: "A",
-      batteryHealth: "95%",
+      condition: "Neuf",
+      grade: "A+",
+      batteryHealth: "100%",
       price: 449,
       originalPrice: 599,
-      image: "/iphone-16e-white-premium-product-shot.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-Plus-hero-geo-240909_inline.jpg.large.jpg",
       features: ["Face ID", "Single Caméra", "A17", "5G"],
+      isNew: true,
+      slug: "iphone-16e",
     },
     {
       id: 6,
@@ -82,8 +95,10 @@ export function FeaturedProducts() {
       batteryHealth: "97%",
       price: 999,
       originalPrice: 1479,
-      image: "/iphone-15-pro-max-titane-naturel-premium-product-s.jpg",
+      image:
+        "https://www.apple.com/newsroom/images/2023/09/apple-unveils-iphone-15-pro-and-iphone-15-pro-max/article/Apple-iPhone-15-Pro-lineup-hero-230912_Full-Bleed-Image.jpg.large.jpg",
       features: ["Face ID", "Triple Caméra", "Action Button", "A17 Pro"],
+      slug: "iphone-15-pro-max",
     },
   ]
 
@@ -180,19 +195,22 @@ export function FeaturedProducts() {
                   </div>
                 </div>
 
-                {/* CTA */}
-                <Button className="w-full" size="lg">
-                  Voir les détails
-                </Button>
+                <Link href={`/produits/${product.slug}`}>
+                  <Button className="w-full" size="lg">
+                    Voir les détails
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg">
-            Voir toute la collection
-          </Button>
+          <Link href="/produits">
+            <Button variant="outline" size="lg">
+              Voir toute la collection
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Shield, Zap, Award, Sparkles } from "lucide-react"
+import Link from "next/link"
 
 export function Hero() {
   return (
@@ -31,13 +32,17 @@ export function Hero() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="text-base">
-                Découvrir iPhone 17 Pro
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="lg" className="text-base bg-transparent">
-                Voir iPhone Air
-              </Button>
+              <Link href="/produits/iphone-17-pro">
+                <Button size="lg" className="text-base">
+                  Découvrir iPhone 17 Pro
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/produits/iphone-air">
+                <Button variant="outline" size="lg" className="text-base bg-transparent">
+                  Voir iPhone Air
+                </Button>
+              </Link>
             </div>
 
             {/* Trust indicators */}
@@ -61,7 +66,7 @@ export function Hero() {
           <div className="relative">
             <div className="relative z-10">
               <img
-                src="/iphone-17-pro-cosmic-orange-premium-product-shot.jpg"
+                src="https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-hero-geo-240909_inline.jpg.large.jpg"
                 alt="iPhone 17 Pro Cosmic Orange"
                 className="w-full max-w-md mx-auto rounded-3xl shadow-2xl"
               />
@@ -80,15 +85,15 @@ export function Hero() {
 
             <div className="absolute bottom-20 -right-4 bg-card border border-border rounded-2xl p-4 shadow-lg">
               <div className="text-center">
-                <p className="text-2xl font-bold">1299€</p>
+                <p className="text-2xl font-bold">1169€</p>
                 <p className="text-xs text-muted-foreground line-through">1499€</p>
-                <p className="text-xs text-green-600 font-medium">-13%</p>
+                <p className="text-xs text-green-600 font-medium">-22%</p>
               </div>
             </div>
 
             <div className="absolute top-32 right-8 opacity-60 hover:opacity-100 transition-opacity">
               <img
-                src="/iphone-air-blue-ultra-thin-premium-product-shot.jpg"
+                src="https://www.apple.com/newsroom/images/2024/09/apple-introduces-iphone-16-and-iphone-16-plus/article/Apple-iPhone-16-Plus-hero-geo-240909_inline.jpg.large.jpg"
                 alt="iPhone Air Blue"
                 className="w-24 h-32 object-cover rounded-xl shadow-lg"
               />
