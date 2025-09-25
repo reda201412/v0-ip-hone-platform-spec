@@ -9,8 +9,25 @@ import { useState, useRef, useEffect } from "react"
 export function FeaturedProducts() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [itemsPerView, setItemsPerView] = useState(3)
   const carouselRef = useRef<HTMLDivElement>(null)
   const autoPlayRef = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerView(1) // Mobile: 1 item
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2) // Tablet: 2 items
+      } else {
+        setItemsPerView(3) // Desktop: 3 items
+      }
+    }
+
+    updateItemsPerView()
+    window.addEventListener("resize", updateItemsPerView)
+    return () => window.removeEventListener("resize", updateItemsPerView)
+  }, [])
 
   const products = [
     {
@@ -110,7 +127,6 @@ export function FeaturedProducts() {
     },
   ]
 
-  const itemsPerView = 3
   const maxIndex = Math.max(0, products.length - itemsPerView)
 
   useEffect(() => {
@@ -141,32 +157,32 @@ export function FeaturedProducts() {
   }
 
   return (
-    <section className="py-24 overflow-hidden">
+    <section className="py-12 md:py-24 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-balance">Nouvelle Gamme iPhone</h2>
-          <p className="text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
+        <div className="text-center space-y-4 mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-balance">Nouvelle Gamme iPhone</h2>
+          <p className="text-base md:text-lg text-muted-foreground text-pretty max-w-2xl mx-auto">
             Découvrez les derniers iPhone 17 Pro, iPhone Air et toute la gamme 2025. Chaque appareil est rigoureusement
             testé, certifié et garanti.
           </p>
         </div>
 
         <div className="relative">
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Hidden on mobile for better UX */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-3 shadow-lg hover:bg-background transition-all duration-200 hover:scale-110"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-2 md:p-3 shadow-lg hover:bg-background transition-all duration-200 hover:scale-110 hidden sm:flex"
             aria-label="Produit précédent"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
           </button>
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-3 shadow-lg hover:bg-background transition-all duration-200 hover:scale-110"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm border border-border rounded-full p-2 md:p-3 shadow-lg hover:bg-background transition-all duration-200 hover:scale-110 hidden sm:flex"
             aria-label="Produit suivant"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
           </button>
 
           {/* Carousel Container */}
@@ -184,88 +200,98 @@ export function FeaturedProducts() {
               }}
             >
               {products.map((product) => (
-                <div key={product.id} className="flex-shrink-0 px-4" style={{ width: `${100 / products.length}%` }}>
-                  <div className="group bg-card border border-border rounded-3xl p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                <div
+                  key={product.id}
+                  className="flex-shrink-0 px-2 md:px-4"
+                  style={{ width: `${100 / products.length}%` }}
+                >
+                  <div className="group bg-card border border-border rounded-2xl md:rounded-3xl p-4 md:p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                     {/* Product Image */}
-                    <div className="relative mb-6 overflow-hidden rounded-2xl">
+                    <div className="relative mb-4 md:mb-6 overflow-hidden rounded-xl md:rounded-2xl">
                       <img
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
-                        className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-48 md:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <Badge
                         variant={product.condition === "Neuf" ? "default" : "secondary"}
-                        className="absolute top-4 left-4 backdrop-blur-sm"
+                        className="absolute top-2 md:top-4 left-2 md:left-4 backdrop-blur-sm text-xs"
                       >
                         {product.condition}
                       </Badge>
                       {product.isNew && (
-                        <Badge className="absolute top-4 right-4 bg-orange-500 hover:bg-orange-600 backdrop-blur-sm">
-                          <Sparkles className="h-3 w-3 mr-1" />
+                        <Badge className="absolute top-2 md:top-4 right-2 md:right-4 bg-orange-500 hover:bg-orange-600 backdrop-blur-sm text-xs">
+                          <Sparkles className="h-2 w-2 md:h-3 md:w-3 mr-1" />
                           NEW
                         </Badge>
                       )}
                       {!product.isNew && (
-                        <div className="absolute top-4 right-4 bg-background/90 backdrop-blur rounded-full px-3 py-1">
-                          <span className="text-sm font-medium">Grade {product.grade}</span>
+                        <div className="absolute top-2 md:top-4 right-2 md:right-4 bg-background/90 backdrop-blur rounded-full px-2 md:px-3 py-1">
+                          <span className="text-xs md:text-sm font-medium">Grade {product.grade}</span>
                         </div>
                       )}
                     </div>
 
                     {/* Product Info */}
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4">
                       <div>
-                        <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                        <h3 className="text-lg md:text-xl font-semibold group-hover:text-primary transition-colors">
                           {product.name}
                         </h3>
-                        <p className="text-muted-foreground">
+                        <p className="text-sm md:text-base text-muted-foreground">
                           {product.storage} • {product.color}
                         </p>
                       </div>
 
-                      {/* Features */}
-                      <div className="flex flex-wrap gap-2">
-                        {product.features.map((feature, index) => (
+                      {/* Features - Better responsive layout */}
+                      <div className="flex flex-wrap gap-1 md:gap-2">
+                        {product.features.slice(0, itemsPerView === 1 ? 2 : 4).map((feature, index) => (
                           <Badge key={index} variant="outline" className="text-xs">
                             {feature}
                           </Badge>
                         ))}
                       </div>
 
-                      {/* Health indicators */}
-                      <div className="flex items-center gap-4 text-sm">
+                      {/* Health indicators - Responsive layout */}
+                      <div className="flex items-center gap-2 md:gap-4 text-xs md:text-sm">
                         <div className="flex items-center gap-1">
-                          <Battery className="h-4 w-4 text-green-500" />
+                          <Battery className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
                           <span>{product.batteryHealth}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Shield className="h-4 w-4 text-blue-500" />
-                          <span>24 mois</span>
+                          <Shield className="h-3 w-3 md:h-4 md:w-4 text-blue-500" />
+                          <span className="hidden sm:inline">24 mois</span>
+                          <span className="sm:hidden">24m</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                          <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-500 fill-current" />
                           <span>4.9</span>
                         </div>
                       </div>
 
-                      {/* Pricing */}
+                      {/* Pricing - Better mobile layout */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-2xl font-bold">{product.price}€</div>
-                          <div className="text-sm text-muted-foreground line-through">{product.originalPrice}€</div>
+                          <div className="text-xl md:text-2xl font-bold">{product.price}€</div>
+                          <div className="text-xs md:text-sm text-muted-foreground line-through">
+                            {product.originalPrice}€
+                          </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm text-green-600 font-medium">
+                          <div className="text-xs md:text-sm text-green-600 font-medium">
                             -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-xs text-muted-foreground hidden sm:block">
                             Économie {product.originalPrice - product.price}€
                           </div>
                         </div>
                       </div>
 
                       <Link href={`/produits/${product.slug}`}>
-                        <Button className="w-full group-hover:bg-primary/90 transition-colors" size="lg">
+                        <Button
+                          className="w-full group-hover:bg-primary/90 transition-colors"
+                          size={itemsPerView === 1 ? "lg" : "default"}
+                        >
                           Voir les détails
                         </Button>
                       </Link>
@@ -276,12 +302,12 @@ export function FeaturedProducts() {
             </div>
           </div>
 
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-6 md:mt-8">
             {Array.from({ length: maxIndex + 1 }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
                   index === currentIndex
                     ? "bg-primary scale-125"
                     : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
@@ -292,7 +318,7 @@ export function FeaturedProducts() {
           </div>
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-8 md:mt-12">
           <Link href="/produits">
             <Button
               variant="outline"

@@ -1,13 +1,58 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Search, ShoppingBag, User, Menu, X, Sparkles } from "lucide-react"
+import { Search, ShoppingBag, User, Menu, X, Sparkles, LogOut } from "lucide-react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useRouter } from "next/navigation"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    // Get initial user
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      setUser(user)
+      setIsLoading(false)
+    }
+
+    getUser()
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null)
+      setIsLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/")
+    router.refresh()
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -62,11 +107,55 @@ export function Header() {
                 <Search className="h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/compte">
-              <Button variant="ghost" size="icon">
-                <User className="h-4 w-4" />
-              </Button>
-            </Link>
+
+            {!isLoading && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <User className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {user ? (
+                    <>
+                      <div className="px-2 py-1.5">
+                        <p className="text-sm font-medium">{user.email}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {user.user_metadata?.first_name && user.user_metadata?.last_name
+                            ? `${user.user_metadata.first_name} ${user.user_metadata.last_name}`
+                            : "Utilisateur"}
+                        </p>
+                      </div>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/compte">Mon compte</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/compte/commandes">Mes commandes</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/compte/preferences">Préférences</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Se déconnecter
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/login">Se connecter</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/auth/signup">Créer un compte</Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+
             <Link href="/panier">
               <Button variant="ghost" size="icon">
                 <ShoppingBag className="h-4 w-4" />
@@ -114,6 +203,34 @@ export function Header() {
               <Link href="/garantie" className="text-sm font-medium hover:text-primary transition-colors">
                 Garantie
               </Link>
+
+              <div className="border-t pt-4 space-y-2">
+                {user ? (
+                  <>
+                    <Link href="/compte" className="block text-sm font-medium hover:text-primary transition-colors">
+                      Mon compte
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block text-sm font-medium text-red-600 hover:text-red-700 transition-colors"
+                    >
+                      Se déconnecter
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/auth/login" className="block text-sm font-medium hover:text-primary transition-colors">
+                      Se connecter
+                    </Link>
+                    <Link
+                      href="/auth/signup"
+                      className="block text-sm font-medium hover:text-primary transition-colors"
+                    >
+                      Créer un compte
+                    </Link>
+                  </>
+                )}
+              </div>
             </nav>
           </div>
         )}
